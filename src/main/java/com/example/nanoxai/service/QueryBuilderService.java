@@ -12,14 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class QueryBuilderService {
 
-    public Query buildSearchQuery(SearchProductsRequest request, boolean fulldata){
+
+    public Query buildSearchQuery(SearchProductsRequest request) {
         Query query = new Query();
-        if (!fulldata){
-            updateQueryFieldsToReturn(query);
-        }
-        if (request == null){
-            return query;
-        }
+        updateQueryFieldsToReturn(query);
         updateQueryWithCriteria(query, request);
         return query;
     }
@@ -34,7 +30,7 @@ public class QueryBuilderService {
     }
 
     private void updateQueryWithCriteria(Query query, SearchProductsRequest request) {
-        if (request.getText() == null){
+        if (request == null || request.getText() == null){
             return;
         }
         String text = request.getText().trim();
@@ -50,8 +46,13 @@ public class QueryBuilderService {
 
     public void updateQueryWithSortAndPagination(Query query, SearchProductsRequest request) {
         addQuerySortIfNecessary(query, request);
-        updateQueryWithPagination(query, request);
+
+        //If request.allItems == true, then get all items and dont paginate
+        if (request == null || !request.isAllItems()){
+            updateQueryWithPagination(query, request);
+        }
     }
+
 
     private void updateQueryWithPagination(Query query, SearchProductsRequest request) {
         int size = request != null && request.getSize() != null ? request.getSize() : Constants.PRODUCT.DEFAULT_SIZE;
@@ -60,6 +61,7 @@ public class QueryBuilderService {
         query.with(pageable);
     }
 
+
     private void addQuerySortIfNecessary(Query query, SearchProductsRequest request) {
         if (request != null && request.getSortField() != null){
             Sort.Direction sortOrder = request.getOrder() == null ? Sort.Direction.ASC : request.getOrder();
@@ -67,4 +69,5 @@ public class QueryBuilderService {
             query.with(sort);
         }
     }
+
 }

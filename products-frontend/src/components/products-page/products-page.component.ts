@@ -16,7 +16,6 @@ export class ProductsPageComponent {
 
   onSearch(term: string): void {
     this.searchTerm = term;
-    // You can add logic here to filter the products based on the search term
   }
 }
 

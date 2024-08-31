@@ -27,11 +27,6 @@ services:
       - "4200:4200"
     depends_on:
       - springboot-app
-
-#    todo CHECK IF NEED
-#    volumes:
-#      - ./src:/app/src
-#      - ./dist:/app/dist
     environment:
       - BACKEND_API_URL=http://springboot-app:8080  # Set the backend service name here
 

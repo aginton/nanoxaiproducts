@@ -15,10 +15,6 @@ public class ProductController {
     @Autowired
     ProductsService productsService;
 
-    @GetMapping()
-    public ProductsResponse getProducts(@RequestParam(defaultValue = "false") boolean fulldata) {
-        return productsService.getProducts(null, fulldata);
-    }
 
     @GetMapping("/{id}")
     public Product getFullProductDetailsById(@PathVariable Integer id) {
@@ -30,12 +26,13 @@ public class ProductController {
         return productsService.loadProductsFromExternalApi();
     }
 
-    // TODO: Make return partial data
     @PostMapping()
-    public ProductsResponse getProducts(@RequestParam(defaultValue = "false") boolean fulldata, @RequestBody SearchProductsRequest request){
-        return productsService.getProducts(request, fulldata);
+    public ProductsResponse searchProducts(@RequestBody SearchProductsRequest request){
+        return productsService.searchProducts(request);
     }
 
+
+    // TODO: Remove
     @GetMapping("/all")
     public ProductsResponse getAllProducts() {
         return productsService.getAllProducts();

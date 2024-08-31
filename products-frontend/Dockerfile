@@ -12,17 +12,11 @@ RUN npm install
 
 # // TODO: CHECK IF THIS NEEDED
 ## Install ng-bootstrap
-#RUN npm install @ng-bootstrap/ng-bootstrap
+RUN npm install @ng-bootstrap/ng-bootstrap
 
 
 # Copy the Angular project files to the container
 COPY . .
-
-# Ensure proper permissions
-RUN chmod -R 755 /app/src
-
-# Debug: List files in /app/src to ensure they are copied
-RUN ls -al /app/src
 
 
 # Expose port 4200 for the Angular dev server

@@ -1,21 +1,21 @@
-<!--<div class="pagination-container">-->
-<!--  <div class="page-size">-->
-<!--    <label for="pageSize">Page Size:</label>-->
-<!--    <select id="pageSize" [(ngModel)]="itemsPerPage" (change)="onPageSizeChange(itemsPerPage)">-->
-<!--      <option *ngFor="let size of [5, 10, 20, 50]" [value]="size">{{ size }}</option>-->
-<!--    </select>-->
-<!--  </div>-->
+<div class="pagination-container">
+  <div class="page-size">
+    <label for="pageSize">Page Size:</label>
+    <select id="pageSize" [(ngModel)]="itemsPerPage" (change)="onPageSizeChange(itemsPerPage)">
+      <option *ngFor="let size of [5, 10, 20, 50]" [value]="size">{{ size }}</option>
+    </select>
+  </div>
 
-<!--  <div class="pagination-controls">-->
-<!--    <ngb-pagination-->
-<!--      [collectionSize]="totalItems"-->
-<!--      [(page)]="currentPage"-->
-<!--      [pageSize]="itemsPerPage"-->
-<!--      (pageChange)="onPageChange($event)">-->
-<!--    </ngb-pagination>-->
-<!--  </div>-->
+  <div class="pagination-controls">
+    <ngb-pagination
+      [collectionSize]="totalItems"
+      [(page)]="currentPage"
+      [pageSize]="itemsPerPage"
+      (pageChange)="onPageChange($event)">
+    </ngb-pagination>
+  </div>
 
-<!--  <div class="page-info">-->
-<!--    <p>Page {{ currentPage }} of {{ totalPages }}</p>-->
-<!--  </div>-->
-<!--</div>-->
+  <div class="page-info">
+    <p>Page {{ currentPage }} of {{ totalPages }}</p>
+  </div>
+</div>

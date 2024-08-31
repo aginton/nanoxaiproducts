@@ -14,6 +14,16 @@ export interface Product {
   // other fields...
 }
 
+export interface SearchProductsRequest {
+  text?: string;
+  sortField?: string;
+  order?: 'ASC' | 'DESC';
+  page?: number;
+  size?: number;
+  allItems?: boolean;
+}
+
+
 export interface ProductsResponse {
   total: number;
   products: Product[];
@@ -27,7 +37,7 @@ export class ProductsService {
 
   constructor(private http: HttpClient) { }
 
-  getProducts(fulldata: boolean): Observable<ProductsResponse> {
-    return this.http.get<ProductsResponse>(`${this.apiUrl}?fulldata=${fulldata}`);
+  searchProducts(request: SearchProductsRequest): Observable<ProductsResponse> {
+    return this.http.post<ProductsResponse>(this.apiUrl, request);
   }
 }

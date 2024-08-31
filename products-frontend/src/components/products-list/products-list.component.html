@@ -1,10 +1,14 @@
 <div>
   <h2>Products</h2>
-<!--  <app-pagination-->
-<!--    [totalItems]="totalProducts"-->
-<!--    [itemsPerPage]="10"-->
-<!--    (pageChanged)="onPageChanged($event)">-->
-<!--  </app-pagination>-->
+
+
+  <label for="pageSizeSelect">Page Size:</label>
+  <select id="pageSizeSelect" [(ngModel)]="pageSize" (change)="onPageSizeChange(pageSize)">
+    <option *ngFor="let size of pageSizeOptions" [value]="size">
+      {{ size === 'All' ? 'All' : size }}
+    </option>
+  </select>
+
 
   <p>Total Products: {{ totalProducts }}</p>
   <table>
@@ -29,4 +33,12 @@
     </tr>
     </tbody>
   </table>
+
+  <ngb-pagination
+    [collectionSize]="totalProducts"
+    [(page)]="currentPage"
+    [pageSize]="pageSize !== 'All' ? pageSize : totalProducts"
+    (pageChange)="onPageChange($event)">
+  </ngb-pagination>
+
 </div>

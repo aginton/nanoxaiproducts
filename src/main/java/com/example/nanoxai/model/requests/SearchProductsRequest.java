@@ -10,6 +10,7 @@ public class SearchProductsRequest {
     Sort.Direction order;
     Integer page;
     Integer size;
+    boolean allItems;
 
     // Custom setter for sortField to handle case-insensitive matching
     public void setSortField(String sortField) {

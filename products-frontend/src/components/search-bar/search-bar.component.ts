@@ -17,5 +17,13 @@ export class SearchBarComponent {
   onSearch(): void {
     this.searchEvent.emit(this.searchTerm);
   }
+
+  onKeydown(event: KeyboardEvent): void {
+    if (event.key === "Enter") {
+      console.log("User entered search for searchTerm ", this.searchTerm);
+      this.searchEvent.emit(this.searchTerm);
+    }
+  }
+
 }
 

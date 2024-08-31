@@ -2,7 +2,6 @@ package com.example.nanoxai.service;
 
 import com.example.nanoxai.constants.Constants;
 import com.example.nanoxai.exceptions.MissingProductException;
-import com.example.nanoxai.model.ExternalDummyProductsApiResponse;
 import com.example.nanoxai.model.Product;
 import com.example.nanoxai.model.requests.SearchProductsRequest;
 import com.example.nanoxai.model.responses.LoadExternalProductsResponse;
@@ -39,9 +38,10 @@ public class ProductsService {
         return ProductsResponse.builder().total(Long.valueOf(allResults.size())).products(allResults).build();
     }
 
-    public ProductsResponse getProducts(SearchProductsRequest request, boolean fulldata) {
+
+    public ProductsResponse searchProducts(SearchProductsRequest request) {
         ProductsResponse response = ProductsResponse.builder().total(0L).build();
-        Query query = queryBuilderService.buildSearchQuery(request, fulldata);
+        Query query = queryBuilderService.buildSearchQuery(request);
         Long totalRecordsInCollection = persistenceManager.countByQuery(Product.class, query);
 
         if (totalRecordsInCollection != null && totalRecordsInCollection > 0){
@@ -101,4 +101,6 @@ public class ProductsService {
         }
         return response;
     }
+
+
 }
