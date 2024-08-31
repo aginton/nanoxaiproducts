@@ -1,0 +1,13 @@
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-size {
+  margin-right: 20px;
+}
+
+.page-info {
+  margin-left: 20px;
+}

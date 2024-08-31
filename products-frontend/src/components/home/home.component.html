@@ -1,0 +1,6 @@
+<div *ngIf="isBackendAlive === null">
+  Checking backend health...
+</div>
+<div *ngIf="isBackendAlive === false" class="error">
+  <p>Backend is not available, redirecting to error page...</p>
+</div>

@@ -1,0 +1,32 @@
+<div>
+  <h2>Products</h2>
+<!--  <app-pagination-->
+<!--    [totalItems]="totalProducts"-->
+<!--    [itemsPerPage]="10"-->
+<!--    (pageChanged)="onPageChanged($event)">-->
+<!--  </app-pagination>-->
+
+  <p>Total Products: {{ totalProducts }}</p>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Thumbnail</th>
+      <th>Title</th>
+      <th>Rating</th>
+      <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let product of products">
+      <td>{{ product.id }}</td>
+      <td>
+        <img [src]="product.thumbnail" alt="{{ product.title }}" width="100">
+      </td>
+      <td>{{ product.title }}</td>
+      <td>{{ product.rating }}</td>
+      <td>{{ product.price }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

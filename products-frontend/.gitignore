@@ -1,0 +1,20 @@
+# Compiled output
+/dist
+/build
+/out-tsc
+
+# Dependencies
+/node_modules
+
+# Environment variables
+/src/environments/*.ts
+!/src/environments/environment*.ts
+
+# IDEs and editors
+/.idea
+/.vscode
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+.angular/cache
