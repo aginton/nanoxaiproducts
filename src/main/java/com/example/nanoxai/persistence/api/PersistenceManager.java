@@ -1,10 +1,12 @@
 package com.example.nanoxai.persistence.api;
 
 
+import com.example.nanoxai.model.Product;
 import org.bson.Document;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.query.Collation;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
@@ -20,12 +22,14 @@ public interface PersistenceManager {
     <T> boolean deleteById(Integer id, Class<T> klass);
     <T> boolean exists(Class<T> klass, Query query);
     <T> T save(T entity);
-    // TODO: Make naming consistent (i.e., entity vs recordList ? )
-    boolean saveAll(List<?> recordList);
+    boolean saveAll(List<?> entities);
 
     AggregationResults<Document> aggregateResults(Aggregation aggregation, String collectionName);
     <T> void upsert(Query query, Update update, Class<T> klass);
 
     void resetCollectionAndSequence(Class<?> klass);
     void ensureIndex(Class<?> klass, String field, Sort.Direction sort);
+    void ensureIndex(Class<?> klass, String field, Sort.Direction sort, Collation collation);
+
+    void deleteByIds(List<Integer> ids, Class<Product> productClass);
 }

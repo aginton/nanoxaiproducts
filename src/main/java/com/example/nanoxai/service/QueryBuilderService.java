@@ -5,6 +5,7 @@ import com.example.nanoxai.model.requests.SearchProductsRequest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Collation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,13 @@ public class QueryBuilderService {
         if (request != null && request.getSortField() != null){
             Sort.Direction sortOrder = request.getOrder() == null ? Sort.Direction.ASC : request.getOrder();
             Sort sort = Sort.by(sortOrder, request.getSortField().getFieldName());
+
+            if ("title".equals(request.getSortField().getFieldName())) {
+                // Use collation for case-insensitive sorting
+                Collation collation = Collation.of("en").strength(Collation.ComparisonLevel.secondary());
+                query.collation(collation);
+            }
+
             query.with(sort);
         }
     }

@@ -1,0 +1,64 @@
+.container.product-list-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button-group .btn {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table th {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.table td img.img-thumbnail {
+  border: 2px solid #ddd;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.ngb-pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.text-info {
+  color: #17a2b8;
+  font-weight: bold;
+}
+
+.p-3 {
+  padding: 1rem !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.mt-4 {
+  margin-top: 1.5rem !important;
+}

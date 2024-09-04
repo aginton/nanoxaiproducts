@@ -1,0 +1,82 @@
+<div *ngIf="product; else loading" class="product-view-container">
+  <h2 class="product-title">{{ product.title }}</h2>
+  <img [src]="product.thumbnail" alt="{{ product.title }}" class="product-thumbnail">
+
+  <div class="product-section">
+    <h3>Description:</h3>
+    <p>{{ product.description }}</p>
+  </div>
+
+  <div class="product-section">
+    <h3>Details:</h3>
+    <p><span class="field-name">Category:</span> {{ product.category }}</p>
+    <p><span class="field-name">Price:</span> ${{ product.price | number:'1.2-2' }}</p>
+    <p><span class="field-name">Rating:</span> {{ product.rating }} / 5</p>
+    <p><span class="field-name">Brand:</span> {{ product.brand }}</p>
+    <p><span class="field-name">Stock:</span> {{ product.stock }} units</p>
+  </div>
+
+  <div class="product-section">
+    <h3>Dimensions:</h3>
+    <ul *ngIf="product.dimensions">
+      <li><span class="field-name">Width:</span> {{ product.dimensions.width }} cm</li>
+      <li><span class="field-name">Height:</span> {{ product.dimensions.height }} cm</li>
+      <li><span class="field-name">Depth:</span> {{ product.dimensions.depth }} cm</li>
+    </ul>
+  </div>
+
+  <div class="product-section">
+    <h3>Warranty Information:</h3>
+    <p>{{ product.warrantyInformation }}</p>
+  </div>
+
+  <div class="product-section">
+    <h3>Shipping Information:</h3>
+    <p>{{ product.shippingInformation }}</p>
+  </div>
+
+  <div class="product-section">
+    <h3>Return Policy:</h3>
+    <p>{{ product.returnPolicy }}</p>
+  </div>
+
+  <div class="product-section">
+    <h3>Tags:</h3>
+    <ul class="tag-list">
+      <li class="tag-item" *ngFor="let tag of product.tags">{{ tag }}</li>
+    </ul>
+  </div>
+
+  <div class="product-section">
+    <h3>Reviews:</h3>
+    <ul class="review-list">
+      <li class="review-item" *ngFor="let review of product.reviews">
+        <p><span class="field-name">Rating:</span> {{ review.rating }}</p>
+        <p><span class="field-name">Comment:</span> {{ review.comment }}</p>
+        <p><span class="field-name">Date:</span> {{ review.date | date:'medium' }}</p>
+        <p><span class="field-name">Reviewer Name:</span> {{ review.reviewerName }}</p>
+        <p><span class="field-name">Reviewer Email:</span> {{ review.reviewerEmail }}</p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="product-section">
+    <h3>Meta Information:</h3>
+    <ul *ngIf="product.meta">
+      <li><span class="field-name">Created At:</span> {{ product.meta.createdAt | date:'medium' }}</li>
+      <li><span class="field-name">Updated At:</span> {{ product.meta.updatedAt | date:'medium' }}</li>
+      <li><span class="field-name">Barcode:</span> {{ product.meta.barcode }}</li>
+      <li><img [src]="product.meta.qrCode" alt="QR Code" class="qr-code"></li>
+    </ul>
+  </div>
+
+  <div class="product-actions">
+    <button class="btn btn-primary" (click)="editProduct()">Edit</button>
+    <button class="btn btn-danger" (click)="deleteProduct()">Delete</button>
+  </div>
+</div>
+
+<!-- Placeholder template for loading state -->
+<ng-template #loading>
+  <p>Loading product details...</p>
+</ng-template>

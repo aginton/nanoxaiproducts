@@ -1,5 +1,6 @@
 package com.example.nanoxai.persistence.mongo;
 
+import com.example.nanoxai.constants.Constants;
 import com.example.nanoxai.model.Product;
 import com.example.nanoxai.persistence.api.PersistenceManager;
 import com.example.nanoxai.service.SequenceGeneratorService;
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.index.Index;
+import org.springframework.data.mongodb.core.query.Collation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -68,9 +70,9 @@ public class PersistenceMongoImpl implements PersistenceManager {
     }
 
     @Override
-    public boolean saveAll(List<?> recordList){
+    public boolean saveAll(List<?> entities){
         try {
-            mongoTemplate.insertAll(recordList);
+            mongoTemplate.insertAll(entities);
             return true;
         } catch (Exception ex){
             log.error("Error while inserting records", ex);
@@ -90,12 +92,20 @@ public class PersistenceMongoImpl implements PersistenceManager {
 
     @Override
     public <T> boolean deleteById(Integer id, Class<T> klass){
-        Query query = new Query(Criteria.where("_id").is(id));
+        Query query = new Query(Criteria.where(Constants.PRODUCT.ID).is(id));
         return mongoTemplate.remove(query, klass).getDeletedCount() > 0;
     }
+
+
+    @Override
+    public void deleteByIds(List<Integer> ids, Class<Product> productClass) {
+        Query query = new Query(Criteria.where(Constants.PRODUCT.ID).in(ids));
+        mongoTemplate.remove(query, Product.class);
+    }
+
     @Override
     public <T> T findById(Integer id, Class<T> klass){
-        Query query = new Query(Criteria.where("_id").is(id));
+        Query query = new Query(Criteria.where(Constants.PRODUCT.ID).is(id));
         return mongoTemplate.findOne(query, klass);
     }
 
@@ -106,7 +116,7 @@ public class PersistenceMongoImpl implements PersistenceManager {
         remove.getDeletedCount();
 
         // Step 2: Reset the sequence ID
-        Query query = new Query(Criteria.where("_id").is(klass.getSimpleName()));
+        Query query = new Query(Criteria.where(Constants.PRODUCT.ID).is(klass.getSimpleName()));
         Update update = new Update().set("seq", 0);
         mongoTemplate.upsert(query, update, SequenceGeneratorService.SequenceCounter.class);
     }
@@ -114,6 +124,13 @@ public class PersistenceMongoImpl implements PersistenceManager {
     @Override
     public void ensureIndex(Class<?> klass, String field, Sort.Direction sort){
         String indexName = mongoTemplate.indexOps(klass).ensureIndex(new Index().on(field, sort));
+        log.info("Created or found index: " + indexName);
+    }
+
+    @Override
+    public void ensureIndex(Class<?> klass, String field, Sort.Direction sort, Collation collation){
+        Index index = new Index().on(field, sort).collation(collation);
+        String indexName = mongoTemplate.indexOps(klass).ensureIndex(index);
         log.info("Created or found index: " + indexName);
     }
 }

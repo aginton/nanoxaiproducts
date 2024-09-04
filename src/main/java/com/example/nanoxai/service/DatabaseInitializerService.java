@@ -8,6 +8,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Collation;
 import org.springframework.stereotype.Service;
 
 
@@ -27,8 +28,11 @@ public class DatabaseInitializerService {
     public void ensureIndexes() {
         persistenceManager.ensureIndex(Product.class, Constants.PRODUCT.PRICE, Sort.Direction.ASC);
         persistenceManager.ensureIndex(Product.class, Constants.PRODUCT.RATING, Sort.Direction.ASC);
-        persistenceManager.ensureIndex(Product.class, Constants.PRODUCT.TITLE, Sort.Direction.ASC);
-        persistenceManager.ensureIndex(Product.class, Constants.PRODUCT.BARCODE, Sort.Direction.ASC);
+
+        //Title should be case-insensitive for sorting purposes
+        //SECONDARY: Considers differences in diacritics (like accents) but still ignores case. For instance, "café" and "cafe" would be considered different, but "Apple" and "apple" would still be equal.
+        Collation collation = Collation.of("en").strength(Collation.ComparisonLevel.secondary());
+        persistenceManager.ensureIndex(Product.class, Constants.PRODUCT.TITLE, Sort.Direction.ASC, collation);
     }
 
     @PostConstruct

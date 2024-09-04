@@ -1,0 +1,254 @@
+<div class="container product-edit-container">
+
+<!-- Error Modal Component -->
+  <app-error-modal></app-error-modal>
+
+  <h1>{{ isCreateMode ? 'Create Product' : 'Edit Product' }}</h1>
+
+  <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+
+    <!-- Title -->
+    <div class="form-group">
+      <label for="title" class="field-name">Title:</label>
+      <input id="title" type="text" formControlName="title" class="form-control"
+             [ngClass]="{'is-invalid': productForm.get('title')?.invalid && productForm.get('title')?.touched}">
+      <div *ngIf="productForm.get('title')?.invalid && productForm.get('title')?.touched" class="invalid-feedback">
+        <span *ngIf="productForm.get('title')?.errors?.['required']">Title is required.</span>
+      </div>
+    </div>
+
+
+    <!-- Description -->
+    <div class="form-group">
+      <label for="description" class="field-name">Description:</label>
+      <textarea id="description" formControlName="description" class="form-control"></textarea>
+    </div>
+
+    <!-- Category -->
+    <div class="form-group">
+      <label for="category" class="field-name">Category:</label>
+      <input id="category" type="text" formControlName="category" class="form-control">
+    </div>
+
+    <!-- Price -->
+    <div class="form-group">
+      <label for="price" class="field-name">Price:</label>
+      <input id="price" type="number" formControlName="price" class="form-control"
+             [ngClass]="{'is-invalid': productForm.get('price')?.invalid && productForm.get('price')?.touched}">
+      <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched" class="invalid-feedback">
+        <span *ngIf="productForm.get('price')?.errors?.['min']">Price must be greater than or equal to 0.</span>
+      </div>
+    </div>
+
+
+    <!-- Discount Percentage -->
+    <div class="form-group">
+      <label for="discountPercentage" class="field-name">Discount Percentage:</label>
+      <input id="discountPercentage" type="number" formControlName="discountPercentage" class="form-control">
+    </div>
+
+    <!-- Rating -->
+    <div class="form-group">
+      <label for="rating" class="field-name">Rating:</label>
+      <input id="rating" type="number" formControlName="rating" class="form-control">
+    </div>
+
+    <!-- Stock -->
+    <div class="form-group">
+      <label for="stock" class="field-name">Stock:</label>
+      <input id="stock" type="number" formControlName="stock" class="form-control">
+    </div>
+
+    <!-- Tags -->
+    <div class="form-group">
+      <label class="field-name">Tags:</label>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Tag</th>
+          <th width="150px">
+            <button type="button" (click)="addTag()" class="btn btn-primary">Add Tag</button>
+          </th>
+        </tr>
+        </thead>
+        <tbody formArrayName="tags">
+        <tr *ngFor="let tag of tags().controls; let i=index">
+          <td>
+            <input type="text" [formControlName]="i" class="form-control">
+          </td>
+          <td>
+            <button type="button" (click)="removeTag(i)" class="btn btn-danger">Remove</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Images -->
+    <table class="table table-bordered" formArrayName="images">
+      <thead>
+      <tr>
+        <th colspan="2">Images:</th>
+        <th width="150px">
+          <button type="button" (click)="addImage()" class="btn btn-primary">Add Image</button>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let image of images().controls; let i=index">
+        <td>
+          Image URL:
+          <input type="text" [formControlName]="i" class="form-control">
+        </td>
+        <td>
+          <button (click)="removeImage(i)" class="btn btn-danger">Remove</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Displaying error message if images array is empty -->
+    <div *ngIf="productForm.get('images')?.invalid && productForm.get('images')?.touched" class="invalid-feedback">
+      <span *ngIf="productForm.get('images')?.errors?.['minLengthArray']">At least one image is required.</span>
+    </div>
+
+
+    <!-- Thumbnail -->
+    <div class="form-group">
+      <label for="thumbnail" class="field-name">Thumbnail:</label>
+      <input id="thumbnail" type="text" formControlName="thumbnail" class="form-control">
+    </div>
+
+    <!-- Brand -->
+    <div class="form-group">
+      <label for="brand" class="field-name">Brand:</label>
+      <input id="brand" type="text" formControlName="brand" class="form-control">
+    </div>
+
+    <!-- SKU -->
+    <div class="form-group">
+      <label for="sku" class="field-name">SKU:</label>
+      <input id="sku" type="text" formControlName="sku" class="form-control">
+    </div>
+
+    <!-- Weight -->
+    <div class="form-group">
+      <label for="weight" class="field-name">Weight:</label>
+      <input id="weight" type="number" formControlName="weight" class="form-control">
+    </div>
+
+    <!-- Dimensions -->
+    <div class="form-group">
+      <label class="field-name">Dimensions:</label>
+      <div formGroupName="dimensions">
+        <div>
+          <label for="width" class="field-name">Width:</label>
+          <input id="width" type="number" formControlName="width" class="form-control">
+        </div>
+        <div>
+          <label for="height" class="field-name">Height:</label>
+          <input id="height" type="number" formControlName="height" class="form-control">
+        </div>
+        <div>
+          <label for="depth" class="field-name">Depth:</label>
+          <input id="depth" type="number" formControlName="depth" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <!-- Warranty Information -->
+    <div class="form-group">
+      <label for="warrantyInformation" class="field-name">Warranty Information:</label>
+      <input id="warrantyInformation" type="text" formControlName="warrantyInformation" class="form-control">
+    </div>
+
+    <!-- Shipping Information -->
+    <div class="form-group">
+      <label for="shippingInformation" class="field-name">Shipping Information:</label>
+      <input id="shippingInformation" type="text" formControlName="shippingInformation" class="form-control">
+    </div>
+
+    <!-- Return Policy -->
+    <div class="form-group">
+      <label for="returnPolicy" class="field-name">Return Policy:</label>
+      <input id="returnPolicy" type="text" formControlName="returnPolicy" class="form-control">
+    </div>
+
+    <!-- Minimum Order Quantity -->
+    <div class="form-group">
+      <label for="minimumOrderQuantity" class="field-name">Minimum Order Quantity:</label>
+      <input id="minimumOrderQuantity" type="number" formControlName="minimumOrderQuantity" class="form-control">
+    </div>
+
+    <!-- Reviews -->
+    <table class="table table-bordered" formArrayName="reviews">
+      <thead>
+      <tr>
+        <th colspan="6">Add Multiple Reviews:</th>
+        <th width="150px">
+          <button type="button" (click)="addReview()" class="btn btn-primary">Add More</button>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let review of reviews().controls; let i=index" [formGroupName]="i">
+        <td>
+          Rating:
+          <input type="number" formControlName="rating" class="form-control">
+        </td>
+        <td>
+          Comment:
+          <input type="text" formControlName="comment" class="form-control">
+        </td>
+        <td>
+          Date:
+          <input type="text" formControlName="date" class="form-control">
+        </td>
+        <td>
+          Reviewer Name:
+          <input type="text" formControlName="reviewerName" class="form-control">
+        </td>
+        <td>
+          Reviewer Email:
+          <input type="text" formControlName="reviewerEmail" class="form-control">
+        </td>
+        <td>
+          <button type="button" (click)="removeReview(i)" class="btn btn-danger">Remove</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Meta Information -->
+    <div class="form-group">
+      <label class="field-name">Meta Information:</label>
+      <div formGroupName="meta">
+        <div class="form-group">
+          <label for="createdAt" class="field-name">Created At:</label>
+          <input id="createdAt" type="text" formControlName="createdAt" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="updatedAt" class="field-name">Updated At:</label>
+          <input id="updatedAt" type="text" formControlName="updatedAt" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="barcode" class="field-name">Barcode:</label>
+          <input id="barcode" type="text" formControlName="barcode" class="form-control"
+                 [ngClass]="{'is-invalid': productForm.get('meta.barcode')?.invalid && productForm.get('meta.barcode')?.touched}">
+          <div *ngIf="productForm.get('meta.barcode')?.invalid && productForm.get('meta.barcode')?.touched" class="invalid-feedback">
+            <span *ngIf="productForm.get('meta.barcode')?.errors?.['required']">Barcode is required.</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="qrCode" class="field-name">QR Code URL:</label>
+          <input id="qrCode" type="text" formControlName="qrCode" class="form-control">
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Save and Cancel buttons -->
+    <button type="submit" class="btn btn-success">{{ isCreateMode ? 'Create' : 'Save' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+  </form>
+</div>

@@ -22,15 +22,14 @@ public class ProductsService {
     private final SequenceGeneratorService sequenceGeneratorService;
     private final VerificationService verificationService;
     private final QueryBuilderService queryBuilderService;
-    private final ExternalApiService externalApiService;
+
 
     @Autowired
-    public ProductsService(PersistenceManager persistenceManager, SequenceGeneratorService sequenceGeneratorService, VerificationService verificationService, QueryBuilderService queryBuilderService, ExternalApiService externalApiService) {
+    public ProductsService(PersistenceManager persistenceManager, SequenceGeneratorService sequenceGeneratorService, VerificationService verificationService, QueryBuilderService queryBuilderService) {
         this.persistenceManager = persistenceManager;
         this.sequenceGeneratorService = sequenceGeneratorService;
         this.verificationService = verificationService;
         this.queryBuilderService = queryBuilderService;
-        this.externalApiService = externalApiService;
     }
 
     public ProductsResponse getAllProducts() {
@@ -75,24 +74,10 @@ public class ProductsService {
         }
     }
 
-    public void resetProductsCollectionAndSequence(){
-        persistenceManager.resetCollectionAndSequence(Product.class);
+    public void deleteProductsByIds(List<Integer> ids) {
+        persistenceManager.deleteByIds(ids, Product.class);
     }
 
-    // TODO: Remove?
-    public Integer getProductSequence() {
-        return sequenceGeneratorService.getCurrentSequenceId(Constants.PRODUCT.SEQ_NAME);
-    }
-
-    public LoadExternalProductsResponse loadProductsFromExternalApi() {
-        List<Product> products = externalApiService.getExternalDummyProducts().getProducts();
-        persistenceManager.saveAll(products);
-        sequenceGeneratorService.adjustProductSequenceBasedOnMaxId();
-        LoadExternalProductsResponse response = new LoadExternalProductsResponse();
-        response.setProducts(products);
-        response.setTotalProductsAdded(products.size());
-        return response;
-    }
 
     public Product getFullProductDetailsById(Integer id) {
         Product response = persistenceManager.findById(id, Product.class);
@@ -101,6 +86,4 @@ public class ProductsService {
         }
         return response;
     }
-
-
 }

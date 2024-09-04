@@ -1,5 +1,6 @@
 package com.example.nanoxai.service;
 
+import com.example.nanoxai.constants.Constants;
 import com.example.nanoxai.exceptions.DuplicateBarcodeException;
 import com.example.nanoxai.exceptions.InvalidProductDetailsException;
 import com.example.nanoxai.exceptions.NullProductException;
@@ -32,7 +33,7 @@ public class VerificationService {
         if (product.getMeta() == null || product.getMeta().getBarcode() == null || product.getMeta().getBarcode().trim().isEmpty()){
             errors.add("Product barcode cannot be null");
         }
-        verifyProductBarcodeNotDuplicate(product.getMeta().getBarcode());
+
         if (CollectionUtils.isEmpty(product.getImages())){
             errors.add("Product must contain at least one image");
         }
@@ -49,12 +50,13 @@ public class VerificationService {
         if (errors.size() > 0){
             throw new InvalidProductDetailsException(errors);
         }
+        verifyProductBarcodeNotDuplicate(product.getId(), product.getMeta().getBarcode());
     }
 
-    public void verifyProductBarcodeNotDuplicate(String barcode) {
+    public void verifyProductBarcodeNotDuplicate(Integer id, String barcode) {
         Query query = new Query();
-        // TODO: Make field name in variable
-        query.addCriteria(Criteria.where("meta.barcode").is(barcode));
+        query.addCriteria(Criteria.where(Constants.PRODUCT.BARCODE).is(barcode)
+                .andOperator(Criteria.where(Constants.PRODUCT.ID).ne(id)));
         if (persistenceManager.exists(Product.class, query)){
             throw new DuplicateBarcodeException("A barcode with value " + barcode + " already exists. Please provide a unique barcode");
         }

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -21,27 +23,17 @@ public class ProductController {
         return productsService.getFullProductDetailsById(id);
     }
 
-    @GetMapping("/load-from-external")
-    public LoadExternalProductsResponse loadProductsFromExternalApi() {
-        return productsService.loadProductsFromExternalApi();
-    }
 
     @PostMapping()
     public ProductsResponse searchProducts(@RequestBody SearchProductsRequest request){
         return productsService.searchProducts(request);
     }
 
-
-    // TODO: Remove
     @GetMapping("/all")
     public ProductsResponse getAllProducts() {
         return productsService.getAllProducts();
     }
 
-    @GetMapping("/sequence")
-    public Integer getSequence() {
-        return productsService.getProductSequence();
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
@@ -49,9 +41,9 @@ public class ProductController {
         return ResponseEntity.noContent().build(); // 204 No Content
     }
 
-    @PostMapping("/reset-products")
-    public ResponseEntity<Void> resetProducts() {
-        productsService.resetProductsCollectionAndSequence();
+    @DeleteMapping
+    public ResponseEntity<Void> deleteProducts(@RequestParam List<Integer> ids) {
+        productsService.deleteProductsByIds(ids);
         return ResponseEntity.noContent().build(); // 204 No Content
     }
 

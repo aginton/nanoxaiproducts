@@ -46,7 +46,6 @@ public class SequenceGeneratorService {
 
         // Update the sequence to start after the maximum ID
         if (maxId == null){
-            // TODO: Throw custom exception
             log.error("No maxId found in the 'products' collection. Skipping sequence adjustment.");
             throw new RuntimeException("No maxId found in the 'products' collection. Unable to adjust sequence");
         }

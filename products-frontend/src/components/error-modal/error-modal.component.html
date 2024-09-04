@@ -1,0 +1,15 @@
+<ng-template #errorModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Error</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <p *ngIf="!Array.isArray(errors)">{{ errors }}</p>
+    <ul *ngIf="Array.isArray(errors)">
+      <li *ngFor="let error of errors">{{ error }}</li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>

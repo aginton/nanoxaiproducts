@@ -1,0 +1,13 @@
+<div ngbDropdown class="d-inline-block">
+  <button class="btn btn-outline-primary" ngbDropdownToggle>
+    {{ selectedSortOption.label }}
+  </button>
+  <div ngbDropdownMenu>
+    <button
+      ngbDropdownItem
+      *ngFor="let option of sortOptions"
+      (click)="onSortChange(option)">
+      {{ option.label }}
+    </button>
+  </div>
+</div>
