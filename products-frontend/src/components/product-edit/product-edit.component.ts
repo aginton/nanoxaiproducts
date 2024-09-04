@@ -233,12 +233,6 @@ export class ProductEditComponent implements OnInit {
   }
 
   saveProduct(): void {
-    // TODO: Use form to validate
-    // if (this.productForm.invalid) {
-    //   this.productForm.markAllAsTouched(); // Mark all fields as touched
-    //   // console.log("Invalid form");
-    //   return;
-    // }
     const productData = this.productForm.value;
 
     if (this.isCreateMode) {

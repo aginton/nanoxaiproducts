@@ -10,7 +10,7 @@ COPY package*.json ./
 # Install all dependencies including devDependencies
 RUN npm install
 
-# // TODO: CHECK IF THIS NEEDED
+
 ## Install ng-bootstrap
 RUN npm install @ng-bootstrap/ng-bootstrap
 

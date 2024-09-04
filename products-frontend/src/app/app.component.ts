@@ -3,7 +3,6 @@ import { RouterOutlet } from '@angular/router';
 import {HealthService} from "../services/healthservice";
 import {CommonModule} from "@angular/common";
 import { Router } from '@angular/router';
-import {ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -18,7 +17,6 @@ import {ReactiveFormsModule} from "@angular/forms";
 export class AppComponent implements OnInit{
   title = 'products-frontend';
   pingResponse: string = '';
-  // TODO: Check what this or means
   isBackendAlive: boolean | null = null;
 
   constructor(private healthService: HealthService, private router: Router) {}
@@ -33,7 +31,6 @@ export class AppComponent implements OnInit{
         this.pingResponse = response;
         this.isBackendAlive = true;
         this.router.navigate(['/products']);  // Navigate to /products
-        // TODO: Make navigate if error
       },
       error => {
         console.error('Error:', error);
