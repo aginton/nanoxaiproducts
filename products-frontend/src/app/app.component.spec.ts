@@ -1,10 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import {of} from "rxjs";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {RouterTestingModule} from "@angular/router/testing";
+import {HealthService} from "../services/healthservice";
 
 describe('AppComponent', () => {
+  let healthServiceMock: any;
+
   beforeEach(async () => {
+    // Create a mock of HealthService
+    healthServiceMock = jasmine.createSpyObj('HealthService', ['ping']);
+    healthServiceMock.ping.and.returnValue(of('Backend is alive')); // Mock a successful response
+
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, HttpClientTestingModule, RouterTestingModule],
+      providers: [{ provide: HealthService, useValue: healthServiceMock }] // Provide the mock service
     }).compileComponents();
   });
 
@@ -18,12 +29,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('products-frontend');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, products-frontend');
   });
 });

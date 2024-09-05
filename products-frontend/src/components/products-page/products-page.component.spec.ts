@@ -9,15 +9,13 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {HttpClient} from "@angular/common/http";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {of} from "rxjs";
+import {ProductsService} from "../../services/products.service";
 
 describe('ProductsPageComponent', () => {
   let component: ProductsPageComponent;
   let fixture: ComponentFixture<ProductsPageComponent>;
-  let productServiceMock: any;
 
   beforeEach(async () => {
-    productServiceMock = jasmine.createSpyObj('ProductService', ['ping']);
-    productServiceMock.ping.and.returnValue(of({})); // Return a successful response
 
     await TestBed.configureTestingModule({
       imports: [
@@ -30,6 +28,13 @@ describe('ProductsPageComponent', () => {
         NgbModule
       ]
     }).compileComponents();
+
+    // Use runInInjectionContext to initialize component and fixture
+    TestBed.runInInjectionContext(() => {
+      fixture = TestBed.createComponent(ProductsPageComponent);
+      component = fixture.componentInstance;
+    });
+
 
     fixture = TestBed.createComponent(ProductsPageComponent);
     component = fixture.componentInstance;

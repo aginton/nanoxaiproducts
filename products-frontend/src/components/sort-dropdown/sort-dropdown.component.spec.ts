@@ -19,9 +19,13 @@ describe('SortDropdownComponent', () => {
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SortDropdownComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    // Use runInInjectionContext to initialize component and fixture
+    TestBed.runInInjectionContext(() => {
+      fixture = TestBed.createComponent(SortDropdownComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();  // Trigger change detection inside the injection context
+    });
+
   });
 
   it('should create', () => {

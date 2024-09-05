@@ -76,12 +76,19 @@ export class ProductEditComponent implements OnInit {
     this.isCreateMode = !productId;
 
     if (this.isCreateMode) {
+      console.log("is inCreateMode, initializing form using empty product");
       this.initializeEmptyProduct();
     } else if (this.product) {
+      console.log("in edit mode, already have product in state. Using to initialize form");
       this.populateForm(this.product);
     } else if (productId) {
+      console.log("in edit mode, did not have value for product. Fetching product using id ", productId, " and using to populate form");
       this.fetchProductAndPopulateForm(Number(productId));
     }
+  }
+
+  getProductId(): string | null {
+    return this.route.snapshot.paramMap.get('id');
   }
 
   initializeEmptyProduct(): void {
@@ -129,6 +136,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   populateForm(product: ProductDetails): void {
+    console.log("Populating form with product: ", product)
     this.productForm.patchValue({
       id: product.id,
       title: product.title,
